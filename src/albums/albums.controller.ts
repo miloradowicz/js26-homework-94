@@ -18,7 +18,7 @@ import { Artist, ArtistDocument } from '../schemas/artist.schema';
 import { CreateAlbumDto } from './create-album.dto';
 import { join } from 'path';
 import config from '../config';
-import { CustomFileInterceptor } from 'src/custom-file/custom-file.interceptor';
+import { CustomFileInterceptor } from '../custom-file/custom-file.interceptor';
 
 @Controller('albums')
 export class AlbumsController {
