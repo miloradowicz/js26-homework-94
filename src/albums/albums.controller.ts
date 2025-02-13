@@ -33,7 +33,7 @@ export class AlbumsController {
   @UseInterceptors(
     CustomFileInterceptor(
       'cover',
-      join(config.rootPath, config.publicPath, 'uploads', 'artists'),
+      join(config.rootPath, config.publicPath, 'uploads', 'albums'),
     ),
   )
   async createOne(
@@ -43,7 +43,7 @@ export class AlbumsController {
     try {
       const album = await this.albumModel.create({
         ...albumDto,
-        coverUrl: file ? '/uploads/artists/' + file.filename : null,
+        coverUrl: file ? '/uploads/albums/' + file.filename : null,
       });
 
       return album;
