@@ -4,7 +4,7 @@ import { Album } from './album.schema';
 
 export type TrackDocument = HydratedDocument<Track>;
 
-@Schema()
+@Schema({ versionKey: false })
 export class Track {
   @Prop({ required: [true, 'title is required'] })
   title: string;
