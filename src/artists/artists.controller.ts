@@ -8,23 +8,27 @@ import {
   Param,
   Post,
   UploadedFile,
+  UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Error, Model } from 'mongoose';
-import { Artist, ArtistDocument } from '../schemas/artist.schema';
+import { Artist } from '../schemas/artist.schema';
 import { CreateArtistDto } from './create-artist.dto';
 import config from '../config';
 import { join } from 'path';
 import { CustomFileInterceptor } from '../custom-file/custom-file.interceptor';
+import { TokenAuthGuard } from 'src/token-auth/token-auth.guard';
+import { PermitGuard } from 'src/permitter/permitter.guard';
 
 @Controller('artists')
 export class ArtistsController {
   constructor(
     @InjectModel(Artist.name)
-    private artistModel: Model<ArtistDocument>,
+    private artistModel: Model<Artist>,
   ) {}
 
+  @UseGuards(TokenAuthGuard, PermitGuard('user', 'admin'))
   @Post()
   @UseInterceptors(
     CustomFileInterceptor(
@@ -52,6 +56,7 @@ export class ArtistsController {
     }
   }
 
+  @UseGuards(TokenAuthGuard)
   @Get()
   async getAll() {
     return this.artistModel.find();
@@ -76,6 +81,7 @@ export class ArtistsController {
     }
   }
 
+  @UseGuards(TokenAuthGuard, PermitGuard('admin'))
   @Delete(':id')
   async deleteOne(@Param('id') id: string) {
     try {

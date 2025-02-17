@@ -8,25 +8,29 @@ import {
   Param,
   Post,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Error, Model } from 'mongoose';
 import { Album, AlbumDocument } from '../schemas/album.schema';
 import { Artist, ArtistDocument } from '../schemas/artist.schema';
-import { Track, TrackDocument } from '../schemas/track.schema';
+import { Track } from '../schemas/track.schema';
 import { CreateTrackDto } from './create-track.dto';
+import { PermitGuard } from 'src/permitter/permitter.guard';
+import { TokenAuthGuard } from 'src/token-auth/token-auth.guard';
 
 @Controller('tracks')
 export class TracksController {
   constructor(
     @InjectModel(Track.name)
-    private trackModel: Model<TrackDocument>,
+    private trackModel: Model<Track>,
     @InjectModel(Album.name)
-    private albumModel: Model<AlbumDocument>,
+    private albumModel: Model<Album>,
     @InjectModel(Artist.name)
-    private artistModel: Model<ArtistDocument>,
+    private artistModel: Model<Artist>,
   ) {}
 
+  @UseGuards(TokenAuthGuard, PermitGuard('user', 'admin'))
   @Post()
   async createOne(@Body() trackDto: CreateTrackDto) {
     try {
@@ -170,6 +174,7 @@ export class TracksController {
     }
   }
 
+  @UseGuards(TokenAuthGuard, PermitGuard('admin'))
   @Delete(':id')
   async deleteOne(@Param('id') id: string) {
     try {
