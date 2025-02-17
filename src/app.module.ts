@@ -13,6 +13,7 @@ import { UsersController } from './users/users.controller';
 import { AuthService } from './auth/auth.service';
 import { PassportModule } from '@nestjs/passport';
 import { LocalStrategy } from './local.strategy';
+import { DocumentExistsRule } from './document-exists/document-exists.rule';
 
 @Module({
   imports: [
@@ -31,6 +32,6 @@ import { LocalStrategy } from './local.strategy';
     AlbumsController,
     TracksController,
   ],
-  providers: [AppService, AuthService, LocalStrategy],
+  providers: [AppService, AuthService, LocalStrategy, DocumentExistsRule],
 })
 export class AppModule {}
