@@ -1,15 +1,22 @@
 import { Transform } from 'class-transformer';
-import { IsMongoId, IsNotEmpty, Min } from 'class-validator';
+import {
+  IsMongoId,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  Min,
+} from 'class-validator';
 import { DocumentExists } from '../document-exists/document-exists';
 import { Album } from '../schemas/album.schema';
 
 export class CreateTrackDto {
   @IsNotEmpty()
+  @IsString()
   title: string;
 
   @IsNotEmpty()
   @IsMongoId()
-  @DocumentExists(Album.name)
+  @DocumentExists(Album)
   album: string;
 
   @IsNotEmpty()
@@ -17,5 +24,7 @@ export class CreateTrackDto {
   @Min(1)
   trackNum: number;
 
+  @IsOptional()
+  @IsString()
   length?: string;
 }

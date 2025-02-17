@@ -16,9 +16,18 @@ export class DocumentExistsRule implements ValidatorConstraintInterface {
 
   async validate(value: string, args: ValidationArguments) {
     try {
-      return !!(await this.connection.models[
-        args.constraints[0] as string
-      ].findById(value));
+      const model =
+        this.connection.models[(args.constraints[0] as { name: string }).name];
+      const fieldName = args.constraints[1] as string | undefined;
+      const inverse = args.constraints[2] as boolean;
+
+      if (!fieldName) {
+        return (await model.findById(value)) ? !inverse : inverse;
+      } else {
+        return (await model.findOne({ [fieldName]: value }))
+          ? !inverse
+          : inverse;
+      }
     } catch (e) {
       this.e = e;
       return false;
@@ -29,7 +38,7 @@ export class DocumentExistsRule implements ValidatorConstraintInterface {
     if (this.e instanceof Error.CastError) {
       return 'invalid id';
     } else {
-      return `${args.property} not found`;
+      return `${args.property} ${!args.constraints[2] ? 'does not exist' : 'exists'}`;
     }
   }
 }

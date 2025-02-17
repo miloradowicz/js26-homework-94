@@ -1,15 +1,16 @@
-import { IsNotEmpty, IsMongoId, Min, Max } from 'class-validator';
+import { IsNotEmpty, IsMongoId, Min, Max, IsString } from 'class-validator';
 import { DocumentExists } from '../document-exists/document-exists';
 import { Artist } from '../schemas/artist.schema';
 import { Transform } from 'class-transformer';
 
 export class CreateAlbumDto {
   @IsNotEmpty()
+  @IsString()
   title: string;
 
   @IsNotEmpty()
   @IsMongoId()
-  @DocumentExists(Artist.name)
+  @DocumentExists(Artist)
   artist: Artist;
 
   @IsNotEmpty()

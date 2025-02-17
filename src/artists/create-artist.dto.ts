@@ -1,15 +1,8 @@
-import {
-  IsNotEmpty,
-  IsAlphanumeric,
-  Length,
-  IsOptional,
-  IsString,
-} from 'class-validator';
+import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 export class CreateArtistDto {
   @IsNotEmpty()
-  @IsAlphanumeric()
-  @Length(3, 30)
+  @IsString()
   name: string;
 
   @IsOptional()
