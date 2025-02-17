@@ -18,7 +18,7 @@ export class TokenAuthGuard implements CanActivate {
 
     const token = request.get('Authorization');
 
-    if (token) {
+    if (!token) {
       return true;
     }
 
