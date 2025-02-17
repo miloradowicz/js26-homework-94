@@ -19,8 +19,11 @@ export class Album {
   @Prop({ required: [true, 'year is required'] })
   year: number;
 
-  @Prop()
-  coverUrl: string;
+  @Prop({
+    type: String,
+    default: null,
+  })
+  coverUrl: string | null;
 }
 
 export const AlbumSchema = SchemaFactory.createForClass(Album);

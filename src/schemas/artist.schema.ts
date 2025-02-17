@@ -8,11 +8,17 @@ export class Artist {
   @Prop({ required: [true, 'name is required'] })
   name: string;
 
-  @Prop()
-  photoUrl: string;
+  @Prop({
+    type: String,
+    default: null,
+  })
+  photoUrl: string | null;
 
-  @Prop()
-  description: string;
+  @Prop({
+    type: String,
+    default: null,
+  })
+  description: string | null;
 }
 
 export const ArtistSchema = SchemaFactory.createForClass(Artist);

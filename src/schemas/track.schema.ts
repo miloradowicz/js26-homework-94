@@ -19,8 +19,11 @@ export class Track {
   @Prop({ required: [true, 'track number is required'] })
   trackNum: number;
 
-  @Prop()
-  length: string;
+  @Prop({
+    type: String,
+    default: null,
+  })
+  length: string | null;
 }
 
 export const TrackSchema = SchemaFactory.createForClass(Track);
